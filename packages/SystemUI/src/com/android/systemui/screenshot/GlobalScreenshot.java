@@ -83,6 +83,7 @@ import android.os.VibrationEffect;
 import android.os.Vibrator;
 import android.provider.DeviceConfig;
 import android.provider.MediaStore;
+import android.provider.Settings;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Slog;
@@ -1003,21 +1004,8 @@ class GlobalScreenshot {
         mScreenshotLayout.post(new Runnable() {
             @Override
             public void run() {
-                switch (mAudioManager.getRingerMode()) {
-                    case AudioManager.RINGER_MODE_SILENT:
-                        // do nothing
-                        break;
-                    case AudioManager.RINGER_MODE_VIBRATE:
-                        if (mVibrator != null && mVibrator.hasVibrator()) {
-                            mVibrator.vibrate(VibrationEffect.createOneShot(50,
-                                    VibrationEffect.DEFAULT_AMPLITUDE));
-                        }
-                        break;
-                    case AudioManager.RINGER_MODE_NORMAL:
-                        // Play the shutter sound to notify that we've taken a screenshot
-                        mCameraSound.play(MediaActionSound.SHUTTER_CLICK);
-                        break;
-                }
+                if (Settings.System.getInt(mContext.getContentResolver(), Settings.System.SCREENSHOT_SOUND, 1) == 1)
+                mCameraSound.play(MediaActionSound.SHUTTER_CLICK);
 
                 mScreenshotView.setLayerType(View.LAYER_TYPE_HARDWARE, null);
                 mScreenshotView.buildLayer();
@@ -1031,11 +1019,6 @@ class GlobalScreenshot {
                 / SCREENSHOT_DROP_IN_DURATION);
         final float flashDurationPct = 2f * flashPeakDurationPct;
         final Interpolator flashAlphaInterpolator = new Interpolator() {
-            @Override
-            public float getInterpolation(float x) {
-                // Flash the flash view in and out quickly
-                if (x <= flashDurationPct) {
-                    return (float) Math.sin(Math.PI * (x / flashDurationPct));
                 }
                 return 0;
             }
