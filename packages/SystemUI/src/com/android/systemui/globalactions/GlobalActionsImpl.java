@@ -20,6 +20,7 @@ import static android.view.WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_M
 import android.app.Dialog;
 import android.app.KeyguardManager;
 import android.content.Context;
+import android.graphics.Point;
 import android.os.PowerManager;
 import android.view.View;
 import android.view.ViewGroup;
@@ -130,21 +131,12 @@ public class GlobalActionsImpl implements GlobalActions, CommandQueue.Callbacks 
         message.setTextColor(color);
         if (rebootCustom) {
             if (reason != null) {
-                if (PowerManager.REBOOT_RECOVERY.equals(reason)) {
-                    message.setText(
-                            com.android.systemui.R.string.global_action_restart_recovery_progress);
-                } else if (PowerManager.REBOOT_BOOTLOADER.equals(reason)) {
-                    message.setText(
-                            com.android.systemui.R.string.global_action_restart_bootloader_progress);
-                } else if (PowerManager.REBOOT_DOWNLOAD.equals(reason)) {
-                    message.setText(
-                            com.android.systemui.R.string.global_action_restart_download_progress);
-                } else if (PowerManager.REBOOT_FASTBOOT.equals(reason)) {
-                    message.setText(
-                            com.android.systemui.R.string.global_action_restart_fastboot_progress);
+                    message.setText(com.android.internal.R.string.reboot_to_bootloader_message);
+                } else if (PowerManager.REBOOT_RECOVERY.equals(reason)) {
+                    message.setText(com.android.internal.R.string.reboot_to_recovery_message);
                 }
             } else {
-                message.setText(com.android.systemui.R.string.global_action_restart_progress);
+                message.setText(com.android.internal.R.string.reboot_system_message);
             }
         } else {
             if (isReboot) {
@@ -154,15 +146,6 @@ public class GlobalActionsImpl implements GlobalActions, CommandQueue.Callbacks 
 
         GradientColors colors = Dependency.get(SysuiColorExtractor.class).getNeutralColors();
         background.setColor(colors.getMainColor(), false);
-
-        d.show();
-    }
-
-    @Override
-    public void disable(int displayId, int state1, int state2, boolean animate) {
-        final boolean disabled = (state2 & DISABLE2_GLOBAL_ACTIONS) != 0;
-        if (displayId != mContext.getDisplayId() || disabled == mDisabled) return;
-        mDisabled = disabled;
         if (disabled && mGlobalActions != null) {
             mGlobalActions.dismissDialog();
         }

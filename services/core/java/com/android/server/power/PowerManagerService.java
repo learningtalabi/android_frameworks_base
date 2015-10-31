@@ -4891,11 +4891,7 @@ public final class PowerManagerService extends SystemService
         }
 
         /**
-         * Reboots the device.
-         *
-         * @param confirm If true, shows a reboot confirmation dialog.
          * @param reason The reason for the reboot, or null if none.
-         * @param wait If true, this call waits for the reboot to complete and does not return.
          */
         @Override // Binder call
         public void rebootCustom(boolean confirm, String reason, boolean wait) {
