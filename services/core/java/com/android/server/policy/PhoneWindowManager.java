@@ -415,6 +415,8 @@ public class PhoneWindowManager implements WindowManagerPolicy {
     private boolean mHasFeatureHdmiCec;
     AlarmManager mAlarmManager;
 
+    boolean mVolumeRockerWake;
+
     // Assigned on main thread, accessed on UI thread
     volatile VrManagerInternal mVrManagerInternal;
 
@@ -904,70 +906,9 @@ public class PhoneWindowManager implements WindowManagerPolicy {
             resolver.registerContentObserver(Settings.Global.getUriFor(
                     Settings.Global.POWER_BUTTON_SUPPRESSION_DELAY_AFTER_GESTURE_WAKE), false, this,
                     UserHandle.USER_ALL);
-            resolver.registerContentObserver(LineageSettings.Secure.getUriFor(
-                    LineageSettings.Secure.KILL_APP_LONGPRESS_BACK), false, this,
+            resolver.registerContentObserver(Settings.System.getUriFor(
+                    Settings.System.VOLUME_ROCKER_WAKE), false, this,
                     UserHandle.USER_ALL);
-            resolver.registerContentObserver(LineageSettings.System.getUriFor(
-                    LineageSettings.System.FORCE_SHOW_NAVBAR), false, this,
-                    UserHandle.USER_ALL);
-            resolver.registerContentObserver(LineageSettings.System.getUriFor(
-                    LineageSettings.System.TORCH_LONG_PRESS_POWER_GESTURE), false, this,
-                    UserHandle.USER_ALL);
-            resolver.registerContentObserver(LineageSettings.System.getUriFor(
-                    LineageSettings.System.TORCH_LONG_PRESS_POWER_TIMEOUT), false, this,
-                    UserHandle.USER_ALL);
-            resolver.registerContentObserver(LineageSettings.System.getUriFor(
-                    LineageSettings.System.KEY_HOME_LONG_PRESS_ACTION), false, this,
-                    UserHandle.USER_ALL);
-            resolver.registerContentObserver(LineageSettings.System.getUriFor(
-                    LineageSettings.System.KEY_HOME_DOUBLE_TAP_ACTION), false, this,
-                    UserHandle.USER_ALL);
-            resolver.registerContentObserver(LineageSettings.System.getUriFor(
-                    LineageSettings.System.KEY_MENU_ACTION), false, this,
-                    UserHandle.USER_ALL);
-            resolver.registerContentObserver(LineageSettings.System.getUriFor(
-                    LineageSettings.System.KEY_MENU_LONG_PRESS_ACTION), false, this,
-                    UserHandle.USER_ALL);
-            resolver.registerContentObserver(LineageSettings.System.getUriFor(
-                    LineageSettings.System.KEY_ASSIST_ACTION), false, this,
-                    UserHandle.USER_ALL);
-            resolver.registerContentObserver(LineageSettings.System.getUriFor(
-                    LineageSettings.System.KEY_ASSIST_LONG_PRESS_ACTION), false, this,
-                    UserHandle.USER_ALL);
-            resolver.registerContentObserver(LineageSettings.System.getUriFor(
-                    LineageSettings.System.KEY_APP_SWITCH_ACTION), false, this,
-                    UserHandle.USER_ALL);
-            resolver.registerContentObserver(LineageSettings.System.getUriFor(
-                    LineageSettings.System.KEY_APP_SWITCH_LONG_PRESS_ACTION), false, this,
-                    UserHandle.USER_ALL);
-            resolver.registerContentObserver(LineageSettings.System.getUriFor(
-                    LineageSettings.System.KEY_EDGE_LONG_SWIPE_ACTION), false, this,
-                    UserHandle.USER_ALL);
-            resolver.registerContentObserver(LineageSettings.System.getUriFor(
-                    LineageSettings.System.HOME_WAKE_SCREEN), false, this,
-                    UserHandle.USER_ALL);
-            resolver.registerContentObserver(LineageSettings.System.getUriFor(
-                    LineageSettings.System.BACK_WAKE_SCREEN), false, this,
-                    UserHandle.USER_ALL);
-            resolver.registerContentObserver(LineageSettings.System.getUriFor(
-                    LineageSettings.System.MENU_WAKE_SCREEN), false, this,
-                    UserHandle.USER_ALL);
-            resolver.registerContentObserver(LineageSettings.System.getUriFor(
-                    LineageSettings.System.ASSIST_WAKE_SCREEN), false, this,
-                    UserHandle.USER_ALL);
-            resolver.registerContentObserver(LineageSettings.System.getUriFor(
-                    LineageSettings.System.APP_SWITCH_WAKE_SCREEN), false, this,
-                    UserHandle.USER_ALL);
-            resolver.registerContentObserver(LineageSettings.System.getUriFor(
-                    LineageSettings.System.VOLUME_WAKE_SCREEN), false, this,
-                    UserHandle.USER_ALL);
-            resolver.registerContentObserver(LineageSettings.System.getUriFor(
-                    LineageSettings.System.VOLUME_ANSWER_CALL), false, this,
-                    UserHandle.USER_ALL);
-            resolver.registerContentObserver(LineageSettings.System.getUriFor(
-                    LineageSettings.System.CLICK_PARTIAL_SCREENSHOT), false, this,
-                    UserHandle.USER_ALL);
-
             updateSettings();
         }
 
@@ -2420,89 +2361,10 @@ public class PhoneWindowManager implements WindowManagerPolicy {
                 mRingerToggleChord = Settings.Secure.VOLUME_HUSH_OFF;
             }
 
-            mTorchLongPressPowerEnabled = LineageSettings.System.getIntForUser(
-                    resolver, LineageSettings.System.TORCH_LONG_PRESS_POWER_GESTURE, 0,
-                    UserHandle.USER_CURRENT) == 1;
-            mTorchTimeout = LineageSettings.System.getIntForUser(
-                    resolver, LineageSettings.System.TORCH_LONG_PRESS_POWER_TIMEOUT, 0,
-                    UserHandle.USER_CURRENT);
-            mHomeWakeScreen = (LineageSettings.System.getIntForUser(resolver,
-                    LineageSettings.System.HOME_WAKE_SCREEN, 1, UserHandle.USER_CURRENT) == 1)
-                    && ((mDeviceHardwareWakeKeys & KEY_MASK_HOME) != 0);
-            mBackWakeScreen = (LineageSettings.System.getIntForUser(resolver,
-                    LineageSettings.System.BACK_WAKE_SCREEN, 0, UserHandle.USER_CURRENT) == 1)
-                    && ((mDeviceHardwareWakeKeys & KEY_MASK_BACK) != 0);
-            mMenuWakeScreen = (LineageSettings.System.getIntForUser(resolver,
-                    LineageSettings.System.MENU_WAKE_SCREEN, 0, UserHandle.USER_CURRENT) == 1)
-                    && ((mDeviceHardwareWakeKeys & KEY_MASK_MENU) != 0);
-            mAssistWakeScreen = (LineageSettings.System.getIntForUser(resolver,
-                    LineageSettings.System.ASSIST_WAKE_SCREEN, 0, UserHandle.USER_CURRENT) == 1)
-                    && ((mDeviceHardwareWakeKeys & KEY_MASK_ASSIST) != 0);
-            mAppSwitchWakeScreen = (LineageSettings.System.getIntForUser(resolver,
-                    LineageSettings.System.APP_SWITCH_WAKE_SCREEN, 0, UserHandle.USER_CURRENT) == 1)
-                    && ((mDeviceHardwareWakeKeys & KEY_MASK_APP_SWITCH) != 0);
-            mVolumeWakeScreen = (LineageSettings.System.getIntForUser(resolver,
-                    LineageSettings.System.VOLUME_WAKE_SCREEN, 0, UserHandle.USER_CURRENT) == 1)
-                    && ((mDeviceHardwareWakeKeys & KEY_MASK_VOLUME) != 0);
-            mVolumeAnswerCall = (LineageSettings.System.getIntForUser(resolver,
-                    LineageSettings.System.VOLUME_ANSWER_CALL, 0, UserHandle.USER_CURRENT) == 1)
-                    && ((mDeviceHardwareWakeKeys & KEY_MASK_VOLUME) != 0);
-            mCameraWakeScreen = (LineageSettings.System.getIntForUser(resolver,
-                    LineageSettings.System.CAMERA_WAKE_SCREEN, 0, UserHandle.USER_CURRENT) == 1)
-                    && ((mDeviceHardwareWakeKeys & KEY_MASK_CAMERA) != 0);
-            mCameraSleepOnRelease = mCameraWakeScreen &&
-                    LineageSettings.System.getIntForUser(resolver,
-                            LineageSettings.System.CAMERA_SLEEP_ON_RELEASE, 0,
-                            UserHandle.USER_CURRENT) == 1;
-            mCameraLaunch = LineageSettings.System.getIntForUser(resolver,
-                    LineageSettings.System.CAMERA_LAUNCH, 0,
-                    UserHandle.USER_CURRENT) == 1;
-            mClickPartialScreenshot = LineageSettings.System.getIntForUser(resolver,
-                    LineageSettings.System.CLICK_PARTIAL_SCREENSHOT, 0,
-                    UserHandle.USER_CURRENT) == 1;
-
-            // Configure wake gesture.
-            boolean wakeGestureEnabledSetting = Settings.Secure.getIntForUser(resolver,
-                    Settings.Secure.WAKE_GESTURE_ENABLED, 0,
-                    UserHandle.USER_CURRENT) != 0;
-            if (mWakeGestureEnabledSetting != wakeGestureEnabledSetting) {
-                mWakeGestureEnabledSetting = wakeGestureEnabledSetting;
-                updateWakeGestureListenerLp();
-            }
-
-            int forceNavbar = LineageSettings.System.getIntForUser(resolver,
-                    LineageSettings.System.FORCE_SHOW_NAVBAR, 0,
-                    UserHandle.USER_CURRENT);
-            if (forceNavbar != mForceNavbar) {
-                mForceNavbar = forceNavbar;
-                if (mLineageHardware.isSupported(LineageHardwareManager.FEATURE_KEY_DISABLE)) {
-                    mLineageHardware.set(LineageHardwareManager.FEATURE_KEY_DISABLE,
-                            mForceNavbar == 1);
-                }
-            }
-
-            updateKeyAssignments();
-
-            // use screen off timeout setting as the timeout for the lockscreen
-            mLockScreenTimeout = Settings.System.getIntForUser(resolver,
-                    Settings.System.SCREEN_OFF_TIMEOUT, 0, UserHandle.USER_CURRENT);
-            String imId = Settings.Secure.getStringForUser(resolver,
-                    Settings.Secure.DEFAULT_INPUT_METHOD, UserHandle.USER_CURRENT);
-            boolean hasSoftInput = imId != null && imId.length() > 0;
-            if (mHasSoftInput != hasSoftInput) {
-                mHasSoftInput = hasSoftInput;
-                updateRotation = true;
-            }
-
-            mLongPressOnPowerBehavior = Settings.Global.getInt(resolver,
-                    Settings.Global.POWER_BUTTON_LONG_PRESS,
-                    mContext.getResources().getInteger(
-                            com.android.internal.R.integer.config_longPressOnPowerBehavior));
             mVeryLongPressOnPowerBehavior = Settings.Global.getInt(resolver,
                     Settings.Global.POWER_BUTTON_VERY_LONG_PRESS,
                     mContext.getResources().getInteger(
                             com.android.internal.R.integer.config_veryLongPressOnPowerBehavior));
-
             mKillAppLongpressBack = LineageSettings.Secure.getInt(resolver,
                     LineageSettings.Secure.KILL_APP_LONGPRESS_BACK, 0) == 1;
         }
@@ -4291,9 +4153,12 @@ public class PhoneWindowManager implements WindowManagerPolicy {
         }
 
         // Basic policy based on interactive state.
+        final boolean isVolumeRockerWake = !isScreenOn()
+                && mVolumeRockerWake
+                && (keyCode == KeyEvent.KEYCODE_VOLUME_UP || keyCode == KeyEvent.KEYCODE_VOLUME_DOWN);
         int result;
         boolean isWakeKey = (policyFlags & WindowManagerPolicy.FLAG_WAKE) != 0
-                || event.isWakeKey();
+                || event.isWakeKey() || isVolumeRockerWake;
         if (interactive || (isInjected && !isWakeKey)) {
             // When the device is interactive or the key is injected pass the
             // key to the application.
@@ -4908,6 +4773,9 @@ public class PhoneWindowManager implements WindowManagerPolicy {
             // ignore volume keys unless docked
             case KeyEvent.KEYCODE_VOLUME_UP:
             case KeyEvent.KEYCODE_VOLUME_DOWN:
+                if (mVolumeRockerWake) {
+                    return true;
+                }
             case KeyEvent.KEYCODE_VOLUME_MUTE:
                 return mVolumeWakeScreen ||
                         mDefaultDisplayPolicy.getDockMode() != Intent.EXTRA_DOCK_STATE_UNDOCKED;
