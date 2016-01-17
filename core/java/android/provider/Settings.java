@@ -4670,7 +4670,6 @@ public final class Settings {
                 ANY_INTEGER_VALIDATOR;
 
         /**
-         * Whether to change the transparency of the qs panel
          * @hide
          */
         public static final String TORCH_LONG_PRESS_POWER_GESTURE = "torch_long_press_power_gesture";

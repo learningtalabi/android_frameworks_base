@@ -111,10 +111,7 @@ import android.app.ActivityTaskManager;
 import android.app.AlarmManager;
 import android.app.AppOpsManager;
 import android.app.IUiModeManager;
-import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.app.ProgressDialog;
-import android.app.SearchManager;
 import android.app.UiModeManager;
 import android.content.ActivityNotFoundException;
 import android.content.BroadcastReceiver;
@@ -132,6 +129,9 @@ import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.database.ContentObserver;
 import android.graphics.Rect;
+import android.hardware.camera2.CameraAccessException;
+import android.hardware.camera2.CameraCharacteristics;
+import android.hardware.camera2.CameraManager;
 import android.graphics.drawable.Drawable;
 import android.hardware.camera2.CameraAccessException;
 import android.hardware.camera2.CameraCharacteristics;
@@ -413,6 +413,8 @@ public class PhoneWindowManager implements WindowManagerPolicy {
     private boolean mHasFeatureWatch;
     private boolean mHasFeatureLeanback;
     private boolean mHasFeatureHdmiCec;
+    AlarmManager mAlarmManager;
+
     AlarmManager mAlarmManager;
 
     boolean mVolumeRockerWake;
@@ -730,6 +732,14 @@ public class PhoneWindowManager implements WindowManagerPolicy {
     private static final int MSG_RINGER_TOGGLE_CHORD = 27;
     private static final int MSG_MOVE_DISPLAY_TO_TOP = 28;
     private static final int MSG_DISPATCH_VOLKEY_WITH_WAKE_LOCK = 29;
+    private static final int MSG_TOGGLE_TORCH = 30;
+
+    private CameraManager mCameraManager;
+    private String mRearFlashCameraId;
+    private boolean mTorchLongPressPowerEnabled;
+    private boolean mTorchEnabled;
+    private int mTorchTimeout;
+    private PendingIntent mTorchOffPendingIntent;
 
     // Lineage additions
     private static final int MSG_TOGGLE_TORCH = 100;
@@ -854,6 +864,9 @@ public class PhoneWindowManager implements WindowManagerPolicy {
                     mVolumeMusicControlActive = true;
                     break;
                 }
+                case MSG_TOGGLE_TORCH:
+                    toggleTorch();
+                    break;
             }
         }
     }
@@ -923,6 +936,12 @@ public class PhoneWindowManager implements WindowManagerPolicy {
                     UserHandle.USER_ALL);
             resolver.registerContentObserver(Settings.System.getUriFor(
                     Settings.System.VOLUME_BUTTON_MUSIC_CONTROL), false, this,
+                    UserHandle.USER_ALL);
+            resolver.registerContentObserver(Settings.System.getUriFor(
+                    Settings.System.TORCH_LONG_PRESS_POWER_GESTURE), false, this,
+                    UserHandle.USER_ALL);
+            resolver.registerContentObserver(Settings.System.getUriFor(
+                    Settings.System.TORCH_LONG_PRESS_POWER_TIMEOUT), false, this,
                     UserHandle.USER_ALL);
             updateSettings();
         }
@@ -1983,6 +2002,7 @@ public class PhoneWindowManager implements WindowManagerPolicy {
         mDreamManagerInternal = LocalServices.getService(DreamManagerInternal.class);
         mPowerManagerInternal = LocalServices.getService(PowerManagerInternal.class);
         mAppOpsManager = mContext.getSystemService(AppOpsManager.class);
+        mAlarmManager = (AlarmManager) mContext.getSystemService(Context.ALARM_SERVICE);
         mDisplayManager = mContext.getSystemService(DisplayManager.class);
         mHasFeatureWatch = mContext.getPackageManager().hasSystemFeature(FEATURE_WATCH);
         mHasFeatureLeanback = mContext.getPackageManager().hasSystemFeature(FEATURE_LEANBACK);
@@ -2027,6 +2047,8 @@ public class PhoneWindowManager implements WindowManagerPolicy {
         }
 
         mHandler = new PolicyHandler();
+        mCameraManager = (CameraManager) mContext.getSystemService(Context.CAMERA_SERVICE);
+        mCameraManager.registerTorchCallback(new TorchModeCallback(), mHandler);
         mWakeGestureListener = new MyWakeGestureListener(mContext, mHandler);
         mSettingsObserver = new SettingsObserver(mHandler);
 
@@ -2382,6 +2404,13 @@ public class PhoneWindowManager implements WindowManagerPolicy {
             mVolumeMusicControl = Settings.System.getIntForUser(resolver,
                     Settings.System.VOLUME_BUTTON_MUSIC_CONTROL, 0,
                     UserHandle.USER_CURRENT) != 0;
+
+            mTorchLongPressPowerEnabled = Settings.System.getIntForUser(
+                    resolver, Settings.System.TORCH_LONG_PRESS_POWER_GESTURE, 0,
+                    UserHandle.USER_CURRENT) == 1;
+            mTorchTimeout = Settings.System.getIntForUser(
+                    resolver, Settings.System.TORCH_LONG_PRESS_POWER_TIMEOUT, 0,
+                    UserHandle.USER_CURRENT);
 
             // Configure wake gesture.
             boolean wakeGestureEnabledSetting = Settings.Secure.getIntForUser(resolver,
@@ -6246,12 +6275,8 @@ public class PhoneWindowManager implements WindowManagerPolicy {
             mTorchOffPendingIntent = null;
         }
     }
-
     private void toggleTorch() {
         cancelTorchOff();
-        final boolean origEnabled = mTorchEnabled;
-        try {
-            final String rearFlashCameraId = getRearFlashCameraId();
             if (rearFlashCameraId != null) {
                 mCameraManager.setTorchMode(rearFlashCameraId, !mTorchEnabled);
                 mTorchEnabled = !mTorchEnabled;
