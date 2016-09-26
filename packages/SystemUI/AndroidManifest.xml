@@ -251,6 +251,21 @@
     <protected-broadcast android:name="com.android.settingslib.action.UNREGISTER_SLICE_RECEIVER" />
     <protected-broadcast android:name="com.android.settings.flashlight.action.FLASHLIGHT_CHANGED" />
 
+    <!-- Pixel Live Wallpapers -->
+    <protected-broadcast android:name="com.breel.wallpapers.NOTIFICATION_RECEIVED"/>
+    <permission android:name="com.breel.wallpapers.notifications"/>
+    <uses-permission android:name="com.breel.wallpapers.notifications"/>
+
+    <!-- Smart space -->
+    <uses-permission android:name="com.google.android.apps.nexuslauncher.permission.QSB"/>
+    <protected-broadcast android:name="com.google.android.systemui.smartspace.ENABLE_UPDATE"/>
+    <protected-broadcast android:name="com.google.android.systemui.smartspace.EXPIRE_EVENT"/>
+    <protected-broadcast android:name="com.google.android.systemui.smartspace.CLICK_EVENT"/>
+
+    <!-- Sync tile -->
+    <uses-permission android:name="android.permission.READ_SYNC_SETTINGS" />
+    <uses-permission android:name="android.permission.WRITE_SYNC_SETTINGS" />
+
     <application
         android:name=".SystemUIApplication"
         android:persistent="true"

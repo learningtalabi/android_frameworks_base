@@ -1,6 +1,5 @@
 /*
  * Copyright (C) 2015 The CyanogenMod Project
- * Copyright (C) 2017 The LineageOS Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,19 +21,17 @@ import android.content.Intent;
 import android.content.SyncStatusObserver;
 import android.service.quicksettings.Tile;
 
-import com.android.systemui.plugins.qs.QSTile.BooleanState;
-import com.android.systemui.qs.QSHost;
-import com.android.systemui.qs.tileimpl.QSTileImpl;
 import com.android.systemui.R;
+import com.android.systemui.qs.QSHost;
+import com.android.systemui.plugins.qs.QSTile.BooleanState;
+import com.android.systemui.qs.tileimpl.QSTileImpl;
 
-import org.lineageos.internal.logging.LineageMetricsLogger;
+import com.android.internal.logging.nano.MetricsProto.MetricsEvent;
 
 import javax.inject.Inject;
 
 /** Quick settings tile: Sync **/
 public class SyncTile extends QSTileImpl<BooleanState> {
-
-    private final Icon mIcon = ResourceIcon.get(R.drawable.ic_qs_sync);
 
     private Object mSyncObserverHandle = null;
     private boolean mListening;
@@ -63,29 +60,30 @@ public class SyncTile extends QSTileImpl<BooleanState> {
     }
 
     @Override
-    protected void handleUpdateState(BooleanState state, Object arg) {
-        state.value = ContentResolver.getMasterSyncAutomatically();
-        state.label = mContext.getString(R.string.quick_settings_sync_label);
-        state.icon = mIcon;
-        if (state.value) {
-            state.contentDescription =  mContext.getString(
-                    R.string.accessibility_quick_settings_sync_on);
-            state.state = Tile.STATE_ACTIVE;
-        } else {
-            state.contentDescription =  mContext.getString(
-                    R.string.accessibility_quick_settings_sync_off);
-            state.state = Tile.STATE_INACTIVE;
-        }
-    }
-
-    @Override
     public CharSequence getTileLabel() {
         return mContext.getString(R.string.quick_settings_sync_label);
     }
 
     @Override
     public int getMetricsCategory() {
-        return LineageMetricsLogger.TILE_SYNC;
+        return MetricsEvent.KCUF_SETTINGS;
+    }
+
+    @Override
+    protected void handleUpdateState(BooleanState state, Object arg) {
+        state.value = ContentResolver.getMasterSyncAutomatically();
+        state.label = mContext.getString(R.string.quick_settings_sync_label);
+        if (state.value) {
+            state.icon = ResourceIcon.get(R.drawable.ic_qs_sync_on);
+            state.contentDescription =  mContext.getString(
+                    R.string.accessibility_quick_settings_sync_on);
+            state.state = Tile.STATE_ACTIVE;
+        } else {
+            state.icon = ResourceIcon.get(R.drawable.ic_qs_sync_off);
+            state.contentDescription =  mContext.getString(
+                    R.string.accessibility_quick_settings_sync_off);
+            state.state = Tile.STATE_INACTIVE;
+        }
     }
 
     @Override

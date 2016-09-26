@@ -89,19 +89,8 @@ public class QSFactoryImpl implements QSFactory {
     private final Provider<NfcTile> mNfcTileProvider;
     private final Provider<GarbageMonitor.MemoryTile> mMemoryTileProvider;
     private final Provider<UiModeNightTile> mUiModeNightTileProvider;
-    private final Provider<AdbOverNetworkTile> mAdbOverNetworkTileProvider;
-    private final Provider<AmbientDisplayTile> mAmbientDisplayTileProvider;
-    private final Provider<CaffeineTile> mCaffeineTileProvider;
-    private final Provider<HeadsUpTile> mHeadsUpTileProvider;
-    private final Provider<LiveDisplayTile> mLiveDisplayTileProvider;
-    private final Provider<AODTile> mAODTileProvider;
-    private final Provider<PowerShareTile> mPowerShareTileProvider;
-    private final Provider<ProfilesTile> mProfilesTileProvider;
-    private final Provider<ReadingModeTile> mReadingModeTileProvider;
+    private final Provider<LteTile> mLteTileProvider;
     private final Provider<SyncTile> mSyncTileProvider;
-    private final Provider<UsbTetherTile> mUsbTetherTileProvider;
-    private final Provider<VolumeTile> mVolumeTileProvider;
-    private final Provider<VpnTile> mVpnTileProvider;
 
     private QSTileHost mHost;
 
@@ -125,19 +114,8 @@ public class QSFactoryImpl implements QSFactory {
             Provider<NfcTile> nfcTileProvider,
             Provider<GarbageMonitor.MemoryTile> memoryTileProvider,
             Provider<UiModeNightTile> uiModeNightTileProvider,
-            Provider<AdbOverNetworkTile> adbOverNetworkTileProvider,
-            Provider<AmbientDisplayTile> ambientDisplayTileProvider,
-            Provider<CaffeineTile> caffeineTileProvider,
-            Provider<HeadsUpTile> headsUpTileProvider,
-            Provider<LiveDisplayTile> liveDisplayTileProvider,
-            Provider<PowerShareTile> powerShareTileProvider,
-            Provider<ProfilesTile> profilesTileProvider,
-            Provider<ReadingModeTile> readingModeTileProvider,
-            Provider<SyncTile> syncTileProvider,
-            Provider<UsbTetherTile> usbTetherTileProvider,
-            Provider<VolumeTile> volumeTileProvider,
-            Provider<VpnTile> vpnTileProvider,
-            Provider<AODTile> aodTileProvider) {
+            Provider<LteTile> lteTileProvider,
+            Provider<SyncTile> syncTileProvider) {
         mWifiTileProvider = wifiTileProvider;
         mBluetoothTileProvider = bluetoothTileProvider;
         mCellularTileProvider = cellularTileProvider;
@@ -157,19 +135,8 @@ public class QSFactoryImpl implements QSFactory {
         mNfcTileProvider = nfcTileProvider;
         mMemoryTileProvider = memoryTileProvider;
         mUiModeNightTileProvider = uiModeNightTileProvider;
-        mAdbOverNetworkTileProvider = adbOverNetworkTileProvider;
-        mAmbientDisplayTileProvider = ambientDisplayTileProvider;
-        mCaffeineTileProvider = caffeineTileProvider;
-        mHeadsUpTileProvider = headsUpTileProvider;
-        mLiveDisplayTileProvider = liveDisplayTileProvider;
-        mAODTileProvider = aodTileProvider;
-        mPowerShareTileProvider = powerShareTileProvider;
-        mProfilesTileProvider = profilesTileProvider;
-        mReadingModeTileProvider = readingModeTileProvider;
+        mLteTileProvider = lteTileProvider;
         mSyncTileProvider = syncTileProvider;
-        mUsbTetherTileProvider = usbTetherTileProvider;
-        mVolumeTileProvider = volumeTileProvider;
-        mVpnTileProvider = vpnTileProvider;
     }
 
     public void setHost(QSTileHost host) {
@@ -223,33 +190,10 @@ public class QSFactoryImpl implements QSFactory {
                 return mNfcTileProvider.get();
             case "dark":
                 return mUiModeNightTileProvider.get();
-            // Custom tiles.
-            case "adb_network":
-                return mAdbOverNetworkTileProvider.get();
-            case "ambient_display":
-                return mAmbientDisplayTileProvider.get();
-            case "caffeine":
-                return mCaffeineTileProvider.get();
-            case "heads_up":
-                return mHeadsUpTileProvider.get();
-            case "livedisplay":
-                return mLiveDisplayTileProvider.get();
-            case "aod":
-                return mAODTileProvider.get();
-            case "powershare":
-                return mPowerShareTileProvider.get();
-            case "profiles":
-                return mProfilesTileProvider.get();
-            case "reading_mode":
-                return mReadingModeTileProvider.get();
+            case "lte":
+                return mLteTileProvider.get();
             case "sync":
                 return mSyncTileProvider.get();
-            case "usb_tether":
-                return mUsbTetherTileProvider.get();
-            case "volume_panel":
-                return mVolumeTileProvider.get();
-            case "vpn":
-                return mVpnTileProvider.get();
         }
 
         // Intent tiles.
