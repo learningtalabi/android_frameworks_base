@@ -4531,8 +4531,19 @@ public final class Settings {
         public static final String SMART_PIXELS_SHIFT_TIMEOUT = "smart_pixels_shift_timeout";
 
         /**
-         * Whether Smart Pixels should enable on power saver mode
          * @hide
+         */
+        public static final String OMNI_ADVANCED_REBOOT = "advanced_reboot";
+
+        /** @hide */
+        private static final Validator OMNI_ADVANCED_REBOOT_VALIDATOR =
+                BOOLEAN_VALIDATOR;
+
+        /**
+         * IMPORTANT: If you add a new public settings you also have to add it to
+         * PUBLIC_SETTINGS below. If the new setting is hidden you have to add
+         * it to PRIVATE_SETTINGS below. Also add a validator that can validate
+         * the setting value. See an example above.
          */
         public static final String SMART_PIXELS_ON_POWER_SAVE = "smart_pixels_on_power_save";
 
@@ -4806,6 +4817,9 @@ public final class Settings {
             VIBRATE_ON_DISCONNECT,
             HEADS_UP_STOPLIST_VALUES,
             HEADS_UP_BLACKLIST_VALUES,
+            TORCH_LONG_PRESS_POWER_GESTURE,
+            TORCH_LONG_PRESS_POWER_TIMEOUT,
+            OMNI_ADVANCED_REBOOT,
         };
 
          * process when restoring historical backup datasets.
@@ -4941,6 +4955,9 @@ public final class Settings {
             PRIVATE_SETTINGS.add(VIBRATE_ON_DISCONNECT);
             PRIVATE_SETTINGS.add(HEADS_UP_STOPLIST_VALUES);
             PRIVATE_SETTINGS.add(HEADS_UP_BLACKLIST_VALUES);
+            PRIVATE_SETTINGS.add(TORCH_LONG_PRESS_POWER_GESTURE);
+            PRIVATE_SETTINGS.add(TORCH_LONG_PRESS_POWER_TIMEOUT);
+            PRIVATE_SETTINGS.add(OMNI_ADVANCED_REBOOT);
         }
 
         /**
@@ -5047,6 +5064,9 @@ public final class Settings {
             VALIDATORS.put(VIBRATE_ON_DISCONNECT, VIBRATE_ON_DISCONNECT_VALIDATOR);
             VALIDATORS.put(HEADS_UP_STOPLIST_VALUES, HEADS_UP_STOPLIST_VALUES_VALIDATOR);
             VALIDATORS.put(HEADS_UP_BLACKLIST_VALUES, HEADS_UP_BLACKLIST_VALUES_VALIDATOR);
+            VALIDATORS.put(TORCH_LONG_PRESS_POWER_GESTURE, TORCH_LONG_PRESS_POWER_GESTURE_VALIDATOR);
+            VALIDATORS.put(TORCH_LONG_PRESS_POWER_TIMEOUT, TORCH_LONG_PRESS_POWER_TIMEOUT_VALIDATOR);
+            VALIDATORS.put(OMNI_ADVANCED_REBOOT, OMNI_ADVANCED_REBOOT_VALIDATOR);
         }
 
          * These entries are considered common between the personal and the managed profile,
