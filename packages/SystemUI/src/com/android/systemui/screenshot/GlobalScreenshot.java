@@ -67,6 +67,8 @@ import android.graphics.PointF;
 import android.graphics.Rect;
 import android.media.AudioManager;
 import android.media.MediaActionSound;
+import android.media.Ringtone;
+import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -653,28 +655,7 @@ class GlobalScreenshot {
 
     private AsyncTask<Void, Void, Void> mSaveInBgTask;
 
-    private MediaActionSound mCameraSound;
-    private AudioManager mAudioManager;
-    private Vibrator mVibrator;
-
-    private ComponentName mTaskComponentName;
-    private PackageManager mPm;
-
-    private final UiOffloadThread mUiOffloadThread = Dependency.get(UiOffloadThread.class);
-    private final TaskStackChangeListener mTaskListener = new TaskStackChangeListener() {
-        @Override
-        public void onTaskStackChanged() {
-            mUiOffloadThread.submit(() -> {
-                try {
-                    final ActivityManager.StackInfo focusedStack =
-                            ActivityTaskManager.getService().getFocusedStackInfo();
-                    if (focusedStack != null && focusedStack.topActivity != null) {
-                        mTaskComponentName = focusedStack.topActivity;
-                    }
-                } catch (Exception e) {}
-            });
-        }
-    };
+    private Ringtone  mScreenshotSound;
 
     private String getForegroundAppLabel() {
         try {
@@ -754,79 +735,9 @@ class GlobalScreenshot {
         mPreviewWidth = panelWidth;
         mPreviewHeight = r.getDimensionPixelSize(R.dimen.notification_max_height);
 
-        // Setup the Camera shutter sound
-        mCameraSound = new MediaActionSound();
-        mCameraSound.load(MediaActionSound.SHUTTER_CLICK);
-
-        // Grab system services needed for screenshot sound
-        mAudioManager = (AudioManager) mContext.getSystemService(Context.AUDIO_SERVICE);
-        mVibrator = (Vibrator) mContext.getSystemService(Context.VIBRATOR_SERVICE);
-
-        // Grab PackageManager
-        mPm = mContext.getPackageManager();
-
-        // Register task stack listener
-        ActivityManagerWrapper.getInstance().registerTaskStackListener(mTaskListener);
-
-        // Initialize current foreground package name
-        mTaskListener.onTaskStackChanged();
-    }
-
-    /**
-     * Creates a new worker thread and saves the screenshot to the media store.
-     */
-    private void saveScreenshotInWorkerThread(Consumer<Uri> finisher, String appLabel) {
-        SaveImageInBackgroundData data = new SaveImageInBackgroundData();
-        data.context = mContext;
-        data.image = mScreenBitmap;
-        data.iconSize = mNotificationIconSize;
-        data.finisher = finisher;
-        data.previewWidth = mPreviewWidth;
-        data.previewheight = mPreviewHeight;
-        if (mSaveInBgTask != null) {
-            mSaveInBgTask.cancel(false);
-        }
-        mSaveInBgTask = new SaveImageInBackgroundTask(
-                mContext, data, mNotificationManager, appLabel).execute();
-    }
-
-    /**
-     * Takes a screenshot of the current display and shows an animation.
-     */
-    private void takeScreenshot(Consumer<Uri> finisher, boolean statusBarVisible,
-            boolean navBarVisible, Rect crop) {
-        int rot = mDisplay.getRotation();
-        int width = crop.width();
-        int height = crop.height();
-
-        // Take the screenshot
-        mScreenBitmap = SurfaceControl.screenshot(crop, width, height, rot);
-        if (mScreenBitmap == null) {
-            notifyScreenshotError(mContext, mNotificationManager,
-                    R.string.screenshot_failed_to_capture_text);
-            finisher.accept(null);
-            return;
-        }
-
-        // Optimizations
-        mScreenBitmap.setHasAlpha(false);
-        mScreenBitmap.prepareToDraw();
-
-        // Start the post-screenshot animation
-        startAnimation(finisher, mDisplayMetrics.widthPixels, mDisplayMetrics.heightPixels,
-                statusBarVisible, navBarVisible, getForegroundAppLabel());
-    }
-
-    void takeScreenshot(Consumer<Uri> finisher, boolean statusBarVisible, boolean navBarVisible) {
-        if (mScreenshotLayout.getParent() != null) {
-            finisher.accept(null);
-            return;
-        }
-
         mDisplay.getRealMetrics(mDisplayMetrics);
         takeScreenshot(finisher, statusBarVisible, navBarVisible,
                 new Rect(0, 0, mDisplayMetrics.widthPixels, mDisplayMetrics.heightPixels));
-    }
 
     void setBlockedGesturalNavigation(boolean blocked) {
         IStatusBarService service = IStatusBarService.Stub.asInterface(
@@ -1004,13 +915,12 @@ class GlobalScreenshot {
         mScreenshotLayout.post(new Runnable() {
             @Override
             public void run() {
-                if (Settings.System.getInt(mContext.getContentResolver(), Settings.System.SCREENSHOT_SOUND, 1) == 1)
-                mCameraSound.play(MediaActionSound.SHUTTER_CLICK);
+                    }
+                }
 
                 mScreenshotView.setLayerType(View.LAYER_TYPE_HARDWARE, null);
                 mScreenshotView.buildLayer();
                 mScreenshotAnimation.start();
-            }
         });
     }
 
