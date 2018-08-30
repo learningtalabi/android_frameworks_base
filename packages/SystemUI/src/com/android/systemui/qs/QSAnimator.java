@@ -97,6 +97,7 @@ public class QSAnimator implements Callback, PageListener, Listener, OnLayoutCha
             Log.w(TAG, "QS Not using page layout");
         }
         panel.setPageListener(this);
+        updateSettings();
     }
 
     public void onRtlChanged() {
@@ -140,13 +141,8 @@ public class QSAnimator implements Callback, PageListener, Listener, OnLayoutCha
     @Override
     public void onViewAttachedToWindow(View v) {
         Dependency.get(TunerService.class).addTunable(this, ALLOW_FANCY_ANIMATION,
-                MOVE_FULL_ROWS, QuickQSPanel.NUM_QUICK_TILES);
-        Dependency.get(TunerService.class).addTunable(this, QS_SHOW_BRIGHTNESS_SLIDER);
     }
 
-    @Override
-    public void onViewDetachedFromWindow(View v) {
-        if (mHost != null) {
             mHost.removeCallback(this);
         }
         Dependency.get(TunerService.class).removeTunable(this);
@@ -161,16 +157,6 @@ public class QSAnimator implements Callback, PageListener, Listener, OnLayoutCha
             }
         } else if (MOVE_FULL_ROWS.equals(key)) {
             mFullRows = TunerService.parseIntegerSwitch(newValue, true);
-        } else if (QuickQSPanel.NUM_QUICK_TILES.equals(key)) {
-            mNumQuickTiles = mQuickQsPanel.getNumQuickTiles(mQs.getContext());
-            clearAnimationState();
-        } else if (QS_SHOW_BRIGHTNESS_SLIDER.equals(key)) {
-            try {
-                mIsQuickQsBrightnessEnabled = Integer.parseInt(newValue) > 1;
-            } catch (NumberFormatException e) {
-                // Catches exception as newValue may be null or malformed.
-                mIsQuickQsBrightnessEnabled = false;
-            }
         }
         updateAnimators();
     }
@@ -465,4 +451,9 @@ public class QSAnimator implements Callback, PageListener, Listener, OnLayoutCha
             setCurrentPosition();
         }
     };
+
+    public void updateSettings() {
+        mNumQuickTiles = mQuickQsPanel.getNumQuickTiles();
+        clearAnimationState();
+    }
 }

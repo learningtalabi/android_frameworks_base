@@ -175,6 +175,7 @@ import com.android.systemui.plugins.statusbar.NotificationSwipeActionHelper.Snoo
 import com.android.systemui.plugins.statusbar.StatusBarStateController;
 import com.android.systemui.qs.QSFragment;
 import com.android.systemui.qs.QSPanel;
+import com.android.systemui.qs.QuickQSPanel;
 import com.android.systemui.recents.Recents;
 import com.android.systemui.recents.ScreenPinningRequest;
 import com.android.systemui.shared.system.WindowManagerWrapper;
@@ -424,6 +425,7 @@ public class StatusBar extends SystemUI implements DemoMode,
 
     // settings
     private QSPanel mQSPanel;
+    private QuickQSPanel mQuickQSPanel;
 
     KeyguardIndicationController mKeyguardIndicationController;
 
@@ -1042,7 +1044,29 @@ public class StatusBar extends SystemUI implements DemoMode,
                 mStatusBarWindow::onShowingLaunchAffordanceChanged);
 
         // Set up the quick settings tile panel
-        setUpQuickSettingsTilePanel();
+        View container = mStatusBarWindow.findViewById(R.id.qs_frame);
+        if (container != null) {
+            FragmentHostManager fragmentHostManager = FragmentHostManager.get(container);
+            ExtensionFragmentListener.attachExtensonToFragment(container, QS.TAG, R.id.qs_frame,
+                    Dependency.get(ExtensionController.class)
+                            .newExtension(QS.class)
+                            .withPlugin(QS.class)
+                            .withDefault(this::createDefaultQSFragment)
+                            .build());
+            mBrightnessMirrorController = new BrightnessMirrorController(mStatusBarWindow,
+                    (visible) -> {
+                        mBrightnessMirrorVisible = visible;
+                        updateScrimController();
+                    });
+            fragmentHostManager.addTagListener(QS.TAG, (tag, f) -> {
+                QS qs = (QS) f;
+                if (qs instanceof QSFragment) {
+                    mQSPanel = ((QSFragment) qs).getQsPanel();
+                    mQSPanel.setBrightnessMirror(mBrightnessMirrorController);
+                    mQuickQSPanel = ((QSFragment) qs).getQuickQsPanel();
+                }
+            });
+        }
 
         mReportRejectedTouch = mStatusBarWindow.findViewById(R.id.report_rejected_touch);
         if (mReportRejectedTouch != null) {
@@ -3009,7 +3033,9 @@ public class StatusBar extends SystemUI implements DemoMode,
         if (mQSPanel != null) {
             mQSPanel.updateResources();
         }
-
+        if (mQuickQSPanel != null) {
+            mQuickQSPanel.updateResources();
+        }
         loadDimens();
 
         if (mStatusBarView != null) {
