@@ -1009,6 +1009,19 @@ public class Build {
     public static final String FINGERPRINT = deriveFingerprint();
 
     /**
+     * KCUF fingerprint
+     * @hide
+     */
+    public static final String PROP_KCUF_FINGERPRINT = "ro.kcuf.fingerprint";
+
+    /**
+     * KCUF fingerprint
+     * @hide
+     */
+    public static final String KCUF_FINGERPRINT = SystemProperties.get(PROP_KCUF_FINGERPRINT,
+            deriveFingerprint());
+
+    /**
      * Some devices split the fingerprint components between multiple
      * partitions, so we might derive the fingerprint at runtime.
      */

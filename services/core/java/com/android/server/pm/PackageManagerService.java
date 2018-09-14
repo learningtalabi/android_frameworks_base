@@ -2134,7 +2134,6 @@ public class PackageManagerService extends IPackageManager.Stub
     public void notifyPackagesReplacedReceived(String[] packages) {
         final int callingUid = Binder.getCallingUid();
         final int callingUserId = UserHandle.getUserId(callingUid);
-
         for (String packageName : packages) {
             PackageSetting setting = mSettings.mPackages.get(packageName);
             if (setting != null && filterAppAccessLPr(setting, callingUid, callingUserId)) {
@@ -2628,10 +2627,10 @@ public class PackageManagerService extends IPackageManager.Stub
             File frameworkDir = new File(Environment.getRootDirectory(), "framework");
 
             final VersionInfo ver = mSettings.getInternalVersion();
-            mIsUpgrade = !Build.DATE.equals(ver.fingerprint);
+            mIsUpgrade = !Build.KCUF_FINGERPRINT.equals(ver.fingerprint);
             if (mIsUpgrade) {
                 logCriticalInfo(Log.INFO,
-                        "Upgrading from " + ver.fingerprint + " to " + Build.DATE);
+                        "Upgrading from " + ver.fingerprint + " to " + Build.KCUF_FINGERPRINT);
             }
 
             // when upgrading from pre-M, promote system app permissions from install to runtime
@@ -3319,7 +3318,7 @@ public class PackageManagerService extends IPackageManager.Stub
                                         | Installer.FLAG_CLEAR_APP_DATA_KEEP_ART_PROFILES);
                     }
                 }
-                ver.fingerprint = Build.DATE;
+                ver.fingerprint = Build.KCUF_FINGERPRINT;
             }
 
             // Grandfather existing (installed before Q) non-system apps to hide
@@ -3724,7 +3723,7 @@ public class PackageManagerService extends IPackageManager.Stub
         // identify cached items. In particular, changing the value of certain
         // feature flags should cause us to invalidate any caches.
         final String cacheName = SystemProperties.digestOf(
-                "ro.build.date",
+                Build.PROP_KCUF_FINGERPRINT,
                 StorageManager.PROP_ISOLATED_STORAGE,
                 StorageManager.PROP_ISOLATED_STORAGE_SNAPSHOT);
 
@@ -22903,8 +22902,7 @@ public class PackageManagerService extends IPackageManager.Stub
                 } catch (PackageManagerException e) {
                     Slog.w(TAG, "Failed to scan " + ps.codePath + ": " + e.getMessage());
                 }
-
-                if (!Build.DATE.equals(ver.fingerprint)) {
+                if (!Build.KCUF_FINGERPRINT.equals(ver.fingerprint)) {
                     clearAppDataLIF(ps.pkg, UserHandle.USER_ALL, FLAG_STORAGE_DE | FLAG_STORAGE_CE
                             | FLAG_STORAGE_EXTERNAL | Installer.FLAG_CLEAR_CODE_CACHE_ONLY
                             | Installer.FLAG_CLEAR_APP_DATA_KEEP_ART_PROFILES);
