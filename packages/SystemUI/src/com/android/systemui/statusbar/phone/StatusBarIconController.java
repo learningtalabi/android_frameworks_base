@@ -302,6 +302,12 @@ public interface StatusBarIconController {
             return view;
         }
 
+        private NetworkTrafficSB onCreateNetworkTraffic(String slot) {
+            NetworkTrafficSB view = new NetworkTrafficSB(mContext);
+            view.setPadding(3, 6, 3, 0);
+            return view;
+        }
+
         protected LinearLayout.LayoutParams onCreateLayoutParams() {
             return new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, mIconSize);
         }
