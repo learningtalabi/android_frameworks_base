@@ -66,6 +66,7 @@ public class NetworkTrafficSB extends TextView  implements DarkReceiver {
     private boolean mSystemIconVisible = true;
     private boolean indicatorUp = false;
     private boolean indicatorDown = false;
+    private boolean mHideArrow;
 
     private boolean mScreenOn = true;
 
@@ -126,7 +127,8 @@ public class NetworkTrafficSB extends TextView  implements DarkReceiver {
                 setVisibility(View.VISIBLE);
             }
             updateVisibility();
-            updateTrafficDrawable();
+            if (!mHideArrow)
+                updateTrafficDrawable();
 
             // Post delayed message to refresh in ~1000ms
             totalRxBytes = newTotalRxBytes;
@@ -182,6 +184,9 @@ public class NetworkTrafficSB extends TextView  implements DarkReceiver {
                     this, UserHandle.USER_ALL);
             resolver.registerContentObserver(Settings.System
                     .getUriFor(Settings.System.NETWORK_TRAFFIC_AUTOHIDE_THRESHOLD), false,
+                    this, UserHandle.USER_ALL);
+            resolver.registerContentObserver(Settings.System
+                    .getUriFor(Settings.System.NETWORK_TRAFFIC_HIDEARROW), false,
                     this, UserHandle.USER_ALL);
         }
 
@@ -298,6 +303,9 @@ public class NetworkTrafficSB extends TextView  implements DarkReceiver {
         mAutoHideThreshold = Settings.System.getIntForUser(resolver,
                 Settings.System.NETWORK_TRAFFIC_AUTOHIDE_THRESHOLD, 0,
                 UserHandle.USER_CURRENT);
+        mHideArrow = Settings.System.getIntForUser(resolver,
+                Settings.System.NETWORK_TRAFFIC_HIDEARROW, 0,
+                UserHandle.USER_CURRENT) == 1;
     }
 
     private void clearHandlerCallbacks() {
@@ -308,7 +316,7 @@ public class NetworkTrafficSB extends TextView  implements DarkReceiver {
 
     private void updateTrafficDrawable() {
         int indicatorDrawable;
-        if (mIsEnabled) {
+        if (mIsEnabled && !mHideArrow) {
             if (indicatorUp) {
                 indicatorDrawable = R.drawable.stat_sys_network_traffic_up_arrow;
                 Drawable d = getContext().getDrawable(indicatorDrawable);
@@ -324,7 +332,9 @@ public class NetworkTrafficSB extends TextView  implements DarkReceiver {
             } else {
                 setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
             }
-	}
+        } else {
+            setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+        }
         setTextColor(mTintColor);
         indicatorUp = false;
         indicatorDown = false;
