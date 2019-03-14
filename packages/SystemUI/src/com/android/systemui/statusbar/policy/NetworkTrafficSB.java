@@ -69,6 +69,9 @@ public class NetworkTrafficSB extends TextView implements StatusIconDisplayable 
     private int mVisibleState = -1;
     private boolean mTrafficVisible = false;
     private boolean mSystemIconVisible = true;
+    private boolean indicatorUp = false;
+    private boolean indicatorDown = false;
+    private boolean mHideArrow;
 
     private boolean mScreenOn = true;
 
@@ -114,6 +117,8 @@ public class NetworkTrafficSB extends TextView implements StatusIconDisplayable 
                 mTrafficVisible = true;
             }
             updateVisibility();
+            if (!mHideArrow)
+                updateTrafficDrawable();
 
             // Post delayed message to refresh in ~1000ms
             totalRxBytes = newTotalRxBytes;
@@ -162,6 +167,9 @@ public class NetworkTrafficSB extends TextView implements StatusIconDisplayable 
                     this, UserHandle.USER_ALL);
             resolver.registerContentObserver(Settings.System
                     .getUriFor(Settings.System.NETWORK_TRAFFIC_AUTOHIDE_THRESHOLD), false,
+                    this, UserHandle.USER_ALL);
+            resolver.registerContentObserver(Settings.System
+                    .getUriFor(Settings.System.NETWORK_TRAFFIC_HIDEARROW), false,
                     this, UserHandle.USER_ALL);
         }
 
@@ -278,6 +286,9 @@ public class NetworkTrafficSB extends TextView implements StatusIconDisplayable 
         mAutoHideThreshold = Settings.System.getIntForUser(resolver,
                 Settings.System.NETWORK_TRAFFIC_AUTOHIDE_THRESHOLD, 0,
                 UserHandle.USER_CURRENT);
+        mHideArrow = Settings.System.getIntForUser(resolver,
+                Settings.System.NETWORK_TRAFFIC_HIDEARROW, 0,
+                UserHandle.USER_CURRENT) == 1;
     }
 
     private void clearHandlerCallbacks() {
@@ -287,17 +298,23 @@ public class NetworkTrafficSB extends TextView implements StatusIconDisplayable 
     }
 
     private void updateTrafficDrawable() {
-        int intTrafficDrawable;
-        if (mIsEnabled) {
-            intTrafficDrawable = R.drawable.stat_sys_network_traffic_updown;
-        } else {
-            intTrafficDrawable = 0;
-        }
-        if (intTrafficDrawable != 0) {
-            Drawable d = getContext().getDrawable(intTrafficDrawable);
-            d.setColorFilter(mTintColor, Mode.SRC_ATOP);
-            setCompoundDrawablePadding(txtImgPadding);
-            setCompoundDrawablesWithIntrinsicBounds(null, null, d, null);
+        int indicatorDrawable;
+        if (mIsEnabled && !mHideArrow) {
+            if (indicatorUp) {
+                indicatorDrawable = R.drawable.stat_sys_network_traffic_up_arrow;
+                Drawable d = getContext().getDrawable(indicatorDrawable);
+                d.setColorFilter(mTintColor, Mode.MULTIPLY);
+                setCompoundDrawablePadding(txtImgPadding);
+                setCompoundDrawablesWithIntrinsicBounds(null, null, d, null);
+            } else if (indicatorDown) {
+                indicatorDrawable = R.drawable.stat_sys_network_traffic_down_arrow;
+                Drawable d = getContext().getDrawable(indicatorDrawable);
+                d.setColorFilter(mTintColor, Mode.MULTIPLY);
+                setCompoundDrawablePadding(txtImgPadding);
+                setCompoundDrawablesWithIntrinsicBounds(null, null, d, null);
+            } else {
+                setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+            }
         } else {
             setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
         }
