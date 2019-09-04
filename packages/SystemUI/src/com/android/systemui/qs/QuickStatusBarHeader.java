@@ -80,9 +80,7 @@ import com.android.systemui.statusbar.policy.DateView;
 import com.android.systemui.statusbar.policy.NextAlarmController;
 import com.android.systemui.statusbar.policy.ZenModeController;
 import com.android.systemui.tuner.TunerService;
-
 import lineageos.providers.LineageSettings;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -155,7 +153,6 @@ public class QuickStatusBarHeader extends RelativeLayout implements
     private Space mSpace;
     private BatteryMeterView mBatteryRemainingIcon;
     private boolean mPermissionsHubEnabled;
-
     private View mQuickQsBrightness;
     private BrightnessController mBrightnessController;
     private boolean mIsQuickQsBrightnessEnabled;
