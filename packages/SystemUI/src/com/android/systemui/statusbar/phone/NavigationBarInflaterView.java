@@ -45,8 +45,6 @@ import com.android.systemui.statusbar.phone.ReverseLinearLayout.ReverseRelativeL
 import com.android.systemui.statusbar.policy.KeyButtonView;
 import com.android.systemui.tuner.TunerService;
 
-import lineageos.providers.LineageSettings;
-
 import java.util.Objects;
 
 public class NavigationBarInflaterView extends FrameLayout
@@ -112,7 +110,6 @@ public class NavigationBarInflaterView extends FrameLayout
     private int mNavBarMode = NAV_BAR_MODE_3BUTTON;
 
     private boolean mInverseLayout;
-    private boolean mIsHintEnabled;
 
     public NavigationBarInflaterView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -172,7 +169,6 @@ public class NavigationBarInflaterView extends FrameLayout
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
         Dependency.get(TunerService.class).addTunable(this, NAV_BAR_INVERSE);
-        Dependency.get(TunerService.class).addTunable(this, KEY_NAVIGATION_HINT);
     }
 
     @Override
@@ -187,10 +183,6 @@ public class NavigationBarInflaterView extends FrameLayout
         if (NAV_BAR_INVERSE.equals(key)) {
             mInverseLayout = TunerService.parseIntegerSwitch(newValue, false);
             updateLayoutInversion();
-        } else if (KEY_NAVIGATION_HINT.equals(key)) {
-            mIsHintEnabled = TunerService.parseIntegerSwitch(newValue, true);
-            updateHint();
-            onLikelyDefaultLayoutChange();
         }
     }
 
