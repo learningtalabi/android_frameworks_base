@@ -26,31 +26,8 @@ LOCAL_REQUIRED_MODULES := \
 	AccentColorPurpleOverlay \
 	AccentColorSluttyPinkOverlay \
 	AccentColorBlueMondayOverlay \
-	AccentColorGoldenShowerOverlay \
-	AccentColorMIUIOverlay \
-	AccentColorTealOverlay \
-	AccentColorRedOverlay \
-	AccentColorQGreenOverlay \
-	AccentColorPinkOverlay \
-	AccentColorLightPurpleOverlay \
-	AccentColorIndigoOverlay \
-	AccentColorFlatPinkOverlay \
-	AccentColorCyanOverlay \
-	AccentColorBlueGrayOverlay \
-	DisplayCutoutEmulationCornerOverlay \
-	DisplayCutoutEmulationDoubleOverlay \
-	DisplayCutoutEmulationTallOverlay \
-	FontAclonicaSourceOverlay \
-	FontAmaranteSourceOverlay \
-	FontBariolSourceOverlay \
-	FontCagliostroSourceOverlay \
-	FontCoolstorySourceOverlay \
-	FontLGSmartGothicSourceOverlay \
-	FontNotoSerifSourceOverlay \
-	FontRosemarySourceOverlay \
 	FontSonySketchSourceOverlay \
 	FontSurferSourceOverlay \
-	FontOneplusSlateSource \
 	FontSamsungOneSourceOverlay \
 	IconPackCircularAndroidOverlay \
 	IconPackCircularLauncherOverlay \
