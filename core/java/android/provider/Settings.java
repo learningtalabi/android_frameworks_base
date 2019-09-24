@@ -4816,6 +4816,16 @@ public final class Settings {
                 ANY_INTEGER_VALIDATOR;
 
         /**
+         *  Enable statusbar double tap gesture on to put device to sleep
+         * @hide
+         */
+        public static final String OMNI_DOUBLE_TAP_SLEEP_GESTURE = "double_tap_sleep_gesture";
+
+        /** @hide */
+        private static final Validator OMNI_DOUBLE_TAP_SLEEP_GESTURE_VALIDATOR =
+                BOOLEAN_VALIDATOR;
+
+        /**
          * Whether to display the 4g or lte network icon in the statusbar
          * @hide
          */
@@ -4905,6 +4915,7 @@ public final class Settings {
             OMNI_QS_TILE_TITLE_VISIBILITY,
             OMNI_QS_QUICKBAR_COLUMNS,
             OMNI_BACK_GESTURE_HEIGHT,
+            OMNI_DOUBLE_TAP_SLEEP_GESTURE,
         };
 
          * process when restoring historical backup datasets.
@@ -5055,6 +5066,7 @@ public final class Settings {
             PRIVATE_SETTINGS.add(OMNI_QS_TILE_TITLE_VISIBILITY);
             PRIVATE_SETTINGS.add(OMNI_QS_QUICKBAR_COLUMNS);
             PRIVATE_SETTINGS.add(OMNI_BACK_GESTURE_HEIGHT);
+            PRIVATE_SETTINGS.add(OMNI_DOUBLE_TAP_SLEEP_GESTURE);
         }
 
         /**
@@ -5171,6 +5183,8 @@ public final class Settings {
             VALIDATORS.put(OMNI_QS_TILE_TITLE_VISIBILITY, OMNI_QS_TILE_TITLE_VISIBILITY_VALIDATOR);
             VALIDATORS.put(OMNI_QS_QUICKBAR_COLUMNS, OMNI_QS_QUICKBAR_COLUMNS_VALIDATOR);
             VALIDATORS.put(OMNI_BACK_GESTURE_HEIGHT, OMNI_BACK_GESTURE_HEIGHT_VALIDATOR);
+            VALIDATORS.put(OMNI_DOUBLE_TAP_SLEEP_GESTURE,
+                    OMNI_DOUBLE_TAP_SLEEP_GESTURE_VALIDATOR);
         }
 
          * These entries are considered common between the personal and the managed profile,
