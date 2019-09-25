@@ -35,7 +35,8 @@ import android.hardware.input.InputManager;
 import android.os.Looper;
 import android.os.RemoteException;
 import android.os.SystemClock;
-import android.os.SystemProperties;
+import android.os.UserHandle;
+import android.provider.Settings;
 import android.util.Log;
 import android.util.MathUtils;
 import android.util.StatsLog;
@@ -153,6 +154,9 @@ public class EdgeBackGestureHandler implements DisplayListener, TunerService.Tun
     private int mRightInset;
     private float mLongSwipeWidth;
 
+    // omni additions start
+    private int mEdgeHeight;
+
     public EdgeBackGestureHandler(Context context, OverviewProxyService overviewProxyService) {
         final Resources res = context.getResources();
         mContext = context;
@@ -185,6 +189,28 @@ public class EdgeBackGestureHandler implements DisplayListener, TunerService.Tun
                 com.android.internal.R.dimen.navigation_bar_gesture_height);
     }
 
+    private void updateEdgeHeightValue() {
+        if (mDisplaySize == null) {
+            return;
+        }
+        int edgeHeightSetting = Settings.System.getIntForUser(mContext.getContentResolver(),
+                Settings.System.OMNI_BACK_GESTURE_HEIGHT, 0, UserHandle.USER_CURRENT);
+        // edgeHeigthSettings cant be range 0 - 3
+        // 0 means full height
+        // 1 measns half of the screen
+        // 2 means lower third of the screen
+        // 3 means lower sicth of the screen
+        if (edgeHeightSetting == 0) {
+            mEdgeHeight = mDisplaySize.y;
+        } else if (edgeHeightSetting == 1) {
+            mEdgeHeight = mDisplaySize.y / 2;
+        } else if (edgeHeightSetting == 2) {
+            mEdgeHeight = mDisplaySize.y / 3;
+        } else {
+            mEdgeHeight = mDisplaySize.y / 6;
+        }
+    }
+
     /**
      * @see NavigationBarView#onAttachedToWindow()
      */
@@ -207,10 +233,8 @@ public class EdgeBackGestureHandler implements DisplayListener, TunerService.Tun
         updateCurrentUserResources(currentUserContext.getResources());
     }
 
-    public void onSystemUiVisibilityChanged(int systemUiVisibility) {
-        mIsInTransientImmersiveStickyState =
-                (systemUiVisibility & SYSTEM_UI_FLAG_IMMERSIVE_STICKY) != 0
-                && (systemUiVisibility & NAVIGATION_BAR_TRANSIENT) != 0;
+    public void onSettingsChanged() {
+        updateEdgeHeightValue();
     }
 
     private void disposeInputChannel() {
@@ -316,8 +340,11 @@ public class EdgeBackGestureHandler implements DisplayListener, TunerService.Tun
         if (mUserExclude > 0 && y < mDisplaySize.y - mNavBarHeight - mUserExclude) {
             return false;
         }
-
-        // Disallow if too far from the edge
+        if (mEdgeHeight != 0) {
+            if (y < (mDisplaySize.y - Math.max(mImeHeight, mNavBarHeight) - mEdgeHeight)) {
+                return false;
+            }
+        }
         if (x > mEdgeWidth + mLeftInset && x < (mDisplaySize.x - mEdgeWidth - mRightInset)) {
             return false;
         }
@@ -486,20 +513,9 @@ public class EdgeBackGestureHandler implements DisplayListener, TunerService.Tun
     }
 
     private void updateDisplaySize() {
-        mContext.getDisplay().getRealSize(mDisplaySize);
-        updateLongSwipeWidth();
-        loadUserExclusion();
-    }
-
-    @Override
-    public void onTuningChanged(String key, String newValue) {
-        if (KEY_EDGE_LONG_SWIPE_ACTION.equals(key)) {
-            mIsLongSwipeEnabled = newValue != null
-                    && Action.fromIntSafe(Integer.parseInt(newValue)) != Action.NOTHING;
-            updateLongSwipeWidth();
-        } else if (KEY_GESTURE_BACK_EXCLUDE_TOP.equals(key)) {
-            loadUserExclusion();
-        }
+                .getDisplay(mDisplayId)
+                .getRealSize(mDisplaySize);
+        updateEdgeHeightValue();
     }
 
     private void sendEvent(int action, int code) {
@@ -511,12 +527,6 @@ public class EdgeBackGestureHandler implements DisplayListener, TunerService.Tun
         final KeyEvent ev = new KeyEvent(when, when, action, code, 0 /* repeat */,
                 0 /* metaState */, KeyCharacterMap.VIRTUAL_KEYBOARD, 0 /* scancode */,
                 flags | KeyEvent.FLAG_FROM_SYSTEM | KeyEvent.FLAG_VIRTUAL_HARD_KEY,
-                InputDevice.SOURCE_KEYBOARD);
-
-        // Bubble controller will give us a valid display id if it should get the back event
-        BubbleController bubbleController = Dependency.get(BubbleController.class);
-        int bubbleDisplayId = bubbleController.getExpandedDisplayId(mContext);
-        if (code == KeyEvent.KEYCODE_BACK && bubbleDisplayId != INVALID_DISPLAY) {
             ev.setDisplayId(bubbleDisplayId);
         }
         InputManager.getInstance().injectInputEvent(ev, InputManager.INJECT_INPUT_EVENT_MODE_ASYNC);
