@@ -15,6 +15,11 @@
  * limitations under the License.
  */
 
-package android.app;
 
-parcelable NotificationGroup;
+    <!-- Network traffic monitor -->
+    <dimen name="net_traffic_txt_img_padding">1dp</dimen>
+
+    <!-- OmniStyle custom headers -->
+    <dimen name="qs_header_image_offset">0dp</dimen>
+    <dimen name="qs_header_image_side_margin">0dp</dimen>
+</resources>
