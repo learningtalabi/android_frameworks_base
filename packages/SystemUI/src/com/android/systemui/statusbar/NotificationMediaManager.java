@@ -239,7 +239,6 @@ public class NotificationMediaManager implements Dumpable, TunerService.Tunable 
                 mContext.getMainExecutor(),
                 mPropertiesChangedListener);
 
-
         Handler mHandler = new Handler();
         SettingsObserver settingsObserver = new SettingsObserver(mHandler);
         settingsObserver.observe();
