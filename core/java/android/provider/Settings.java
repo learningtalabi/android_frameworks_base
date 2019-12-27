@@ -4562,65 +4562,6 @@ public final class Settings {
         private static final Validator GESTURE_PILL_TOGGLE_VALIDATOR =
                 BOOLEAN_VALIDATOR;
 
-        /**
-         * Whether to enable gaming mode or not
-         *
-         * @hide
-         */
-        public static final String ENABLE_GAMING_MODE = "enable_gaming_mode";
-
-        /** Width of the navigation handle.
-         *  @hide
-         */
-        public static final String NAVIGATION_HANDLE_WIDTH = "navigation_handle_width";
-
-        /** @hide */
-        private static final Validator NAVIGATION_HANDLE_WIDTH_VALIDATOR = ANY_INTEGER_VALIDATOR;
-
-        /**
-         * Number of qs columns on landscape orientation
-         * @hide
-         */
-        public static final String QS_LAYOUT_COLUMNS_LANDSCAPE = "qs_layout_columns_landscape";
-         /** @hide */
-        private static final Validator QS_LAYOUT_COLUMNS_LANDSCAPE_VALIDATOR =
-                ANY_INTEGER_VALIDATOR;
-
-         /**
-         * @hide
-         */
-        public static final String QS_LAYOUT_COLUMNS = "qs_layout_columns";
-         /** @hide */
-        private static final Validator QS_LAYOUT_COLUMNS_VALIDATOR =
-                ANY_INTEGER_VALIDATOR;
-
-        /**
-         * Whether to display qs tile titles in the qs panel
-         * @hide
-         */
-        public static final String QS_TILE_TITLE_VISIBILITY = "qs_tile_title_visibility";
-        /** @hide */
-        private static final Validator QS_TILE_TITLE_VISIBILITY_VALIDATOR =
-                BOOLEAN_VALIDATOR;
-
-        /**
-         * @hide
-         */
-        public static final String QS_QUICKBAR_COLUMNS = "qs_quickbar_columns";
-        /** @hide */
-        private static final Validator QS_QUICKBAR_COLUMNS_VALIDATOR =
-                ANY_INTEGER_VALIDATOR;
-
-        /**
-         * Which Vibration Pattern to use
-         * 0: dzzz-dzzz
-         * 1: dzzz-da
-         * 2: mm-mm-mm
-         * 3: da-da-dzzz
-         * 4: da-dzzz-da
-         * @hide
-         */
-        public static final String RINGTONE_VIBRATION_PATTERN = "ringtone_vibration_pattern";
 
         /**
          * Settings to backup. This is here so that it's in the same place as the settings
@@ -4687,6 +4628,7 @@ public final class Settings {
             DISPLAY_COLOR_MODE,
             ALARM_ALERT,
             NOTIFICATION_LIGHT_PULSE,
+            GESTURE_PILL_TOGGLE
         };
 
         /**
@@ -4806,6 +4748,7 @@ public final class Settings {
             PRIVATE_SETTINGS.add(EGG_MODE);
             PRIVATE_SETTINGS.add(SHOW_BATTERY_PERCENT);
             PRIVATE_SETTINGS.add(DISPLAY_COLOR_MODE);
+            PRIVATE_SETTINGS.add(GESTURE_PILL_TOGGLE);
         }
 
         /**
@@ -4901,6 +4844,7 @@ public final class Settings {
             VALIDATORS.put(NOTIFICATION_LIGHT_PULSE, BOOLEAN_VALIDATOR);
             VALIDATORS.put(ACCELEROMETER_ROTATION_ANGLES,
                     ACCELEROMETER_ROTATION_ANGLES_VALIDATOR);
+            VALIDATORS.put(GESTURE_PILL_TOGGLE, GESTURE_PILL_TOGGLE_VALIDATOR);
         }
 
         /**
