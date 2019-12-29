@@ -37,6 +37,8 @@ LOCAL_REQUIRED_MODULES := \
 	FontRosemarySourceOverlay \
 	FontSonySketchSourceOverlay \
 	FontSurferSourceOverlay \
+	FontOneplusSlateSource \
+	FontSamsungOneSourceOverlay \
 	IconPackCircularAndroidOverlay \
 	IconPackCircularLauncherOverlay \
 	IconPackCircularSettingsOverlay \
