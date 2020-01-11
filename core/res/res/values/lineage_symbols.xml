@@ -42,4 +42,13 @@
     <java-symbol type="array" name="config_deviceDisabledComponents" />
     <java-symbol type="array" name="config_globallyDisabledComponents" />
     <java-symbol type="array" name="config_forceEnabledComponents" />
+    
+    <!-- Whether device ignores the RSSNR signal implementation -->
+    <java-symbol type="bool" name="config_ignoreRssnrSignalLevel" />  
+    
+    <!-- Component name of the combo network location provider. -->  
+    <java-symbol type="string" name="config_comboNetworkLocationProvider" /> 
+
+  <!-- Device has OnePlus haptic motor -->
+  <java-symbol type="bool" name="config_hasOnePlusHapticMotor" />
 </resources>
