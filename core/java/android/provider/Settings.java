@@ -4528,7 +4528,117 @@ public final class Settings {
          * Smart Pixels Shift Timeout
          * @hide
          */
-        public static final String SMART_PIXELS_SHIFT_TIMEOUT = "smart_pixels_shift_timeout";
+        public static final String NAVIGATION_BAR_SHOW = "navigation_bar_show";
+
+         /** @hide */
+        public static final Validator NAVIGATION_BAR_SHOW_VALIDATOR =
+                BOOLEAN_VALIDATOR;
+
+        /**
+         * Action to perform when the home key is long-pressed.
+         * (Default can be configured via config_longPressOnHomeBehaviorHwkeys)
+         * 0 - Nothing
+         * 1 - Menu
+         * 2 - App-switch
+         * 3 - Search
+         * 4 - Voice search
+         * 5 - Launch Camera
+         * 6 - Action Sleep
+         * 7 - Toggle split screen
+         */
+        public static final String KEY_HOME_LONG_PRESS_ACTION = "key_home_long_press_action";
+
+        /** @hide */
+        public static final Validator KEY_HOME_LONG_PRESS_ACTION_VALIDATOR =
+                new SettingsValidators.InclusiveIntegerRangeValidator(0, 9);
+
+        /**
+         * Action to perform when the home key is double-tapped.
+         * (Default can be configured via config_doubleTapOnHomeBehaviorHwkeys)
+         * (See KEY_HOME_LONG_PRESS_ACTION for valid values)
+         */
+        public static final String KEY_HOME_DOUBLE_TAP_ACTION = "key_home_double_tap_action";
+
+        /** @hide */
+        public static final Validator KEY_HOME_DOUBLE_TAP_ACTION_VALIDATOR =
+                new SettingsValidators.InclusiveIntegerRangeValidator(0, 9);
+
+        /**
+         * Action to perform when the menu key is pressed. (Default is 1)
+         * (See KEY_HOME_LONG_PRESS_ACTION for valid values)
+         */
+        public static final String KEY_MENU_ACTION = "key_menu_action";
+
+        /** @hide */
+        public static final Validator KEY_MENU_ACTION_VALIDATOR =
+                new SettingsValidators.InclusiveIntegerRangeValidator(0, 9);
+
+        /**
+         * Action to perform when the menu key is long-pressed.
+         * (Default is 0 on devices with a search key, 3 on devices without)
+         * (See KEY_HOME_LONG_PRESS_ACTION for valid values)
+         */
+        public static final String KEY_MENU_LONG_PRESS_ACTION = "key_menu_long_press_action";
+
+        /** @hide */
+        public static final Validator KEY_MENU_LONG_PRESS_ACTION_VALIDATOR =
+                new SettingsValidators.InclusiveIntegerRangeValidator(0, 9);
+
+        /**
+         * Action to perform when the assistant (search) key is pressed. (Default is 3)
+         * (See KEY_HOME_LONG_PRESS_ACTION for valid values)
+         */
+        public static final String KEY_ASSIST_ACTION = "key_assist_action";
+
+        /** @hide */
+        public static final Validator KEY_ASSIST_ACTION_VALIDATOR =
+                new SettingsValidators.InclusiveIntegerRangeValidator(0, 9);
+
+        /**
+         * Action to perform when the assistant (search) key is long-pressed. (Default is 4)
+         * (See KEY_HOME_LONG_PRESS_ACTION for valid values)
+         */
+        public static final String KEY_ASSIST_LONG_PRESS_ACTION = "key_assist_long_press_action";
+
+        /** @hide */
+        public static final Validator KEY_ASSIST_LONG_PRESS_ACTION_VALIDATOR =
+                new SettingsValidators.InclusiveIntegerRangeValidator(0, 9);
+
+        /**
+         * Action to perform when the app switch key is pressed. (Default is 2)
+         * (See KEY_HOME_LONG_PRESS_ACTION for valid values)
+         */
+        public static final String KEY_APP_SWITCH_ACTION = "key_app_switch_action";
+
+        /** @hide */
+        public static final Validator KEY_APP_SWITCH_ACTION_VALIDATOR =
+                new SettingsValidators.InclusiveIntegerRangeValidator(0, 9);
+
+        /**
+         * Action to perform when the app switch key is long-pressed. (Default is 0)
+         * (See KEY_HOME_LONG_PRESS_ACTION for valid values)
+         */
+        public static final String KEY_APP_SWITCH_LONG_PRESS_ACTION = "key_app_switch_long_press_action";
+
+        /** @hide */
+        public static final Validator KEY_APP_SWITCH_LONG_PRESS_ACTION_VALIDATOR =
+                new SettingsValidators.InclusiveIntegerRangeValidator(0, 9);
+
+        /**
+         * Whether to wake the screen with the home key, the value is boolean.
+         * 0 = 0ff, 1 = on
+         */
+
+         public static final String HOME_WAKE_SCREEN = "home_wake_screen";
+        
+        /** @hide */
+        public static final Validator HOME_WAKE_SCREEN_VALIDATOR =
+                BOOLEAN_VALIDATOR;
+        /**
+         * Show data usage in QS header
+         * @hide
+         */
+        public static final String QS_DATAUSAGE = "qs_datausage";
 
         /**
          * Whether Smart Pixels should enable on power saver mode
