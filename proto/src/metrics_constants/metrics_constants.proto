@@ -7429,5 +7429,12 @@ message MetricsEvent {
     // ---- End Q Constants, all Q constants go above this line ----
     // Add new aosp constants above this line.
     // END OF AOSP CONSTANTS
+    // Lineage category
+    LINEAGE = 5000;
+
+    // Panel for Mobile Data
+    PANEL_MOBILE_DATA = 5001;
+    // Panel for Bluetooth
+    PANEL_BLUETOOTH = 5002;
   }
 }
