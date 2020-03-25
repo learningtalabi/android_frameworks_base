@@ -14,11 +14,8 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License
   -->
-<resources>
-    <!-- Gradient Shit -->
-    <color name="gradient_start">#ff8ab4f8</color>
-    <color name="gradient_end">#ff8ab4f8</color>
 
-    <color name="toast_bg">@color/material_grey_800</color>
-    <color name="toast_text">@color/white</color>
-</resources>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="@color/qs_background_dark" />
+    <corners android:radius="?android:attr/dialogCornerRadius" />
+</shape>
