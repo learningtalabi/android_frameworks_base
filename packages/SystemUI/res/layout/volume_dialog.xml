@@ -30,7 +30,7 @@
     android:paddingTop="@dimen/volume_dialog_panel_transparent_padding"
     android:theme="@style/qs_theme">
 
-    <LinearLayout=
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/volume_dialog_spacer"
