@@ -158,19 +158,7 @@ public final class ClockManager {
         addBuiltinClock(() -> new SamsungHighlightClockController(res, layoutInflater, colorExtractor));
         addBuiltinClock(() -> new BubbleClockController(res, layoutInflater, colorExtractor));
         addBuiltinClock(() -> new AnalogClockController(res, layoutInflater, colorExtractor));
-        addBuiltinClock(() -> new TypeClockController(res, layoutInflater, colorExtractor));
-        addBuiltinClock(() -> new BinaryClockController(res, layoutInflater, colorExtractor));
-        addBuiltinClock(() -> new DividedLinesClockController(res, layoutInflater, colorExtractor));
-        addBuiltinClock(() -> new SfunyClockController(res, layoutInflater, colorExtractor));
-        addBuiltinClock(() -> new OronosClockController(res, layoutInflater, colorExtractor));
-        addBuiltinClock(() -> new MNMLBoxClockController(res, layoutInflater, colorExtractor));
-        addBuiltinClock(() -> new MNMLMinimalClockController(res, layoutInflater, colorExtractor));
-        addBuiltinClock(() -> new BinaryClockController(res, layoutInflater, colorExtractor));
-        addBuiltinClock(() -> new DotClockController(res, layoutInflater, colorExtractor));
-        addBuiltinClock(() -> new SpectrumClockController(res, layoutInflater, colorExtractor));
-        addBuiltinClock(() -> new SpideyClockController(res, layoutInflater, colorExtractor));
-        addBuiltinClock(() -> new TypeClockController(res, layoutInflater, colorExtractor, context));
-
+        addBuiltinClock(() -> new LineageClockController(res, layoutInflater, colorExtractor));
 
         // Store the size of the display for generation of clock preview.
         DisplayMetrics dm = res.getDisplayMetrics();
