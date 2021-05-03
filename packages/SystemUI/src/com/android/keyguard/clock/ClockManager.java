@@ -158,6 +158,8 @@ public final class ClockManager {
         addBuiltinClock(() -> new MNMLBoxClockController(res, layoutInflater, colorExtractor));
         addBuiltinClock(() -> new MNMLMinimalClockController(res, layoutInflater, colorExtractor));
         addBuiltinClock(() -> new BinaryClockController(res, layoutInflater, colorExtractor));
+        addBuiltinClock(() -> new SpectrumClockController(res, layoutInflater, colorExtractor));
+        addBuiltinClock(() -> new SpideyClockController(res, layoutInflater, colorExtractor));
         addBuiltinClock(() -> new TypeClockController(res, layoutInflater, colorExtractor, context));
 
 
