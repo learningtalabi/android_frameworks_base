@@ -41,7 +41,7 @@
     <bool name="config_statusBarShowNumber">false</bool>
 
     <!-- For how long the lock screen can be on before the display turns off. -->
-    <integer name="config_lockScreenDisplayTimeout">10000</integer>
+    <integer name="config_lockScreenDisplayTimeout">9000</integer>
 
     <!-- Vibrator pattern for camera gesture launch. -->
     <integer-array translatable="false" name="config_cameraLaunchGestureVibePattern">
@@ -51,7 +51,7 @@
 
     <!-- How many icons may be shown at once in the system bar. Includes any
          slots that may be reused for things like IME control. -->
-    <integer name="config_maxNotificationIcons">5</integer>
+    <integer name="config_maxNotificationIcons">4</integer>
 
     <!-- Show phone (voice) signal strength instead of data in mobile RSSI. -->
     <bool name="config_showPhoneRSSIForData">false</bool>
@@ -346,7 +346,7 @@
     <bool name="config_enableNotificationShadeDrag">true</bool>
 
     <!-- Whether to show activity indicators in the status bar -->
-    <bool name="config_showActivity">false</bool>
+    <bool name="config_showActivity">true</bool>
 
     <!-- Whether or not the button to clear all notifications will be shown. -->
     <bool name="config_enableNotificationsClearAll">true</bool>
@@ -367,7 +367,7 @@
     <bool name="config_fadeDependingOnAmountSwiped">false</bool>
 
     <!-- Whether or not to show the expand button at the end of the notification header. -->
-    <bool name="config_showNotificationExpandButtonAtEnd">false</bool>
+    <bool name="config_showNotificationExpandButtonAtEnd">true</bool>
 
     <!-- Whether or the notifications should be clipped to be reduced in height if it has been
          scrolled to the top of the screen. -->
@@ -419,7 +419,7 @@
     <!-- Snooze: List of snooze values in integer minutes. -->
     <integer-array name="config_notification_snooze_times">
         <item>15</item>
-        <item>30</item>
+        <item>200</item>
         <item>360</item>
         <item>1120</item>
     </integer-array>
