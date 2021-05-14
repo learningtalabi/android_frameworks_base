@@ -153,7 +153,6 @@ public final class ClockManager {
         addBuiltinClock(() -> new MNMLBoxClockController(res, layoutInflater, colorExtractor));
         addBuiltinClock(() -> new MNMLMinimalClockController(res, layoutInflater, colorExtractor));
         addBuiltinClock(() -> new LineageClockController(res, layoutInflater, colorExtractor));
-        addBuiltinClock(() -> new SpectrumClockController(res, layoutInflater, colorExtractor));
         addBuiltinClock(() -> new FluidClockController(res, layoutInflater, colorExtractor));
         addBuiltinClock(() -> new TuxClockController(res, layoutInflater, colorExtractor));
 
