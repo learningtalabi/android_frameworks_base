@@ -32,7 +32,7 @@
     <dimen name="navigation_bar_deadzone_size_max">32dp</dimen>
 
     <!-- dimensions for the navigation bar handle -->
-    <dimen name="navigation_handle_radius">1dp</dimen>
+    <dimen name="navigation_handle_radius">2dp</dimen>
     <dimen name="navigation_handle_bottom">6dp</dimen>
     <dimen name="navigation_handle_horizontal_margin">30dp</dimen>
     <dimen name="navigation_handle_sample_horizontal_margin">10dp</dimen>
@@ -42,7 +42,7 @@
          edge sensitivity + the drag threshold -->
     <dimen name="navigation_edge_panel_width">70dp</dimen>
     <!-- Padding at the end of the navigation panel to allow the arrow not to be clipped off -->
-    <dimen name="navigation_edge_panel_padding">8dp</dimen>
+    <dimen name="navigation_edge_panel_padding">11dp</dimen>
     <dimen name="navigation_edge_panel_height">96dp</dimen>
     <!-- The threshold to drag to trigger the edge action -->
     <dimen name="navigation_edge_action_drag_threshold">16dp</dimen>
@@ -63,7 +63,7 @@
     <dimen name="status_bar_icon_size">@*android:dimen/status_bar_icon_size</dimen>
 
     <!-- Default horizontal drawable padding for status bar icons. -->
-    <dimen name="status_bar_horizontal_padding">2.5dp</dimen>
+    <dimen name="status_bar_horizontal_padding">3.0dp</dimen>
 
     <!-- Height of the battery icon in the status bar. -->
     <dimen name="status_bar_battery_icon_height">13.0dp</dimen>
@@ -85,7 +85,7 @@
     <dimen name="status_bar_left_clock_starting_padding">0dp</dimen>
 
     <!-- End padding for left-aligned status bar clock -->
-    <dimen name="status_bar_left_clock_end_padding">7dp</dimen>
+    <dimen name="status_bar_left_clock_end_padding">8dp</dimen>
 
     <!-- Spacing after the wifi signals that is present if there are any icons following it. -->
     <dimen name="status_bar_wifi_signal_spacer_width">2.5dp</dimen>
@@ -115,22 +115,22 @@
     <dimen name="notification_min_height">@*android:dimen/notification_min_height</dimen>
 
     <!-- Increased height of a small notification in the status bar -->
-    <dimen name="notification_min_height_increased">146dp</dimen>
+    <dimen name="notification_min_height_increased">152dp</dimen>
 
     <!-- Increased height of a collapsed media notification in the status bar -->
     <dimen name="notification_min_height_media">160dp</dimen>
 
     <!-- Height of a small notification in the status bar which was used before android N -->
-    <dimen name="notification_min_height_legacy">64dp</dimen>
+    <dimen name="notification_min_height_legacy">68dp</dimen>
 
     <!-- Height of a small notification in the status bar which was used before android P -->
     <dimen name="notification_min_height_before_p">92dp</dimen>
 
     <!-- Height of a large notification in the status bar -->
-    <dimen name="notification_max_height">294dp</dimen>
+    <dimen name="notification_max_height">298dp</dimen>
 
     <!-- Height of a heads up notification in the status bar for legacy custom views -->
-    <dimen name="notification_max_heads_up_height_legacy">128dp</dimen>
+    <dimen name="notification_max_heads_up_height_legacy">130dp</dimen>
 
     <!-- Height of a heads up notification in the status bar for custom views before andoid P -->
     <dimen name="notification_max_heads_up_height_before_p">148dp</dimen>
@@ -145,7 +145,7 @@
     <dimen name="notification_side_paddings">16dp</dimen>
 
     <!-- padding between the heads up and the statusbar -->
-    <dimen name="heads_up_status_bar_padding">6dp</dimen>
+    <dimen name="heads_up_status_bar_padding">8dp</dimen>
 
     <!-- heads up elevation that is added if the view is pinned -->
     <dimen name="heads_up_pinned_elevation">16dp</dimen>
@@ -164,7 +164,7 @@
     <dimen name="notification_min_interaction_height">40dp</dimen>
 
     <!-- the padding of the shelf icon container -->
-    <dimen name="shelf_icon_container_padding">13dp</dimen>
+    <dimen name="shelf_icon_container_padding">12dp</dimen>
 
     <!-- The padding of a notification icon on top to the start of the notification. Used for custom
          views where the distance can't be measured -->
@@ -274,7 +274,7 @@
     <dimen name="status_bar_padding_start">8dp</dimen>
 
     <!-- the padding on the end of the statusbar -->
-    <dimen name="status_bar_padding_end">8dp</dimen>
+    <dimen name="status_bar_padding_end">10dp</dimen>
 
     <!-- the padding on the top of the statusbar (usually 0) -->
     <dimen name="status_bar_padding_top">0dp</dimen>
@@ -292,7 +292,7 @@
     <dimen name="global_screenshot_selector_border_width">4dp</dimen>
 
     <!-- The width of the partial screenshot corner resize handles -->
-    <dimen name="global_screenshot_selector_corner_width">8dp</dimen>
+    <dimen name="global_screenshot_selector_corner_width">9dp</dimen>
 
     <!-- The size of the area around a resize handle used for touch detection -->
     <dimen name="global_screenshot_selector_touch_width">30dp</dimen>
@@ -337,7 +337,7 @@
     <dimen name="car_status_bar_header_height">128dp</dimen>
 
     <!-- The bottom padding of the status bar header. -->
-    <dimen name="status_bar_header_padding_bottom">48dp</dimen>
+    <dimen name="status_bar_header_padding_bottom">44dp</dimen>
 
     <!-- The height of the container that holds the battery and time in the quick settings header.
          -->
@@ -400,15 +400,15 @@
 
     <dimen name="volume_dialog_stream_padding">8dp</dimen>
 
-    <dimen name="volume_dialog_panel_width">64dp</dimen>
+    <dimen name="volume_dialog_panel_width">62dp</dimen>
 
-    <dimen name="volume_dialog_slider_height">116dp</dimen>
+    <dimen name="volume_dialog_slider_height">124dp</dimen>
 
     <dimen name="volume_dialog_ringer_size">64dp</dimen>
 
     <dimen name="volume_dialog_ringer_icon_padding">20dp</dimen>
 
-    <dimen name="volume_dialog_caption_size">64dp</dimen>
+    <dimen name="volume_dialog_caption_size">68dp</dimen>
 
     <dimen name="volume_dialog_tap_target_size">48dp</dimen>
 
@@ -465,28 +465,28 @@
     <dimen name="qs_header_tile_margin_horizontal">4dp</dimen>
     <dimen name="qs_page_indicator_width">16dp</dimen>
     <dimen name="qs_page_indicator_height">8dp</dimen>
-    <dimen name="qs_tile_icon_size">20dp</dimen>
+    <dimen name="qs_tile_icon_size">18dp</dimen>
     <dimen name="qs_tile_text_size">12sp</dimen>
     <dimen name="qs_tile_divider_height">1dp</dimen>
-    <dimen name="qs_panel_padding">16dp</dimen>
+    <dimen name="qs_panel_padding">17dp</dimen>
     <dimen name="qs_dual_tile_height">112dp</dimen>
     <dimen name="qs_dual_tile_padding_vertical">8dp</dimen>
     <dimen name="qs_dual_tile_padding_horizontal">6dp</dimen>
     <dimen name="qs_tile_padding_top">14dp</dimen>
-    <dimen name="qs_tile_padding_top_large_text">4dp</dimen>
+    <dimen name="qs_tile_padding_top_large_text">3dp</dimen>
     <dimen name="qs_tile_padding_bottom">16dp</dimen>
     <dimen name="qs_tile_spacing">4dp</dimen>
     <dimen name="qs_panel_padding_bottom">0dp</dimen>
     <dimen name="qs_panel_padding_top">@dimen/qs_header_tooltip_height</dimen>
-    <dimen name="qs_detail_header_height">56dp</dimen>
+    <dimen name="qs_detail_header_height">52dp</dimen>
     <dimen name="qs_detail_header_padding">0dp</dimen>
     <dimen name="qs_detail_image_width">56dp</dimen>
     <dimen name="qs_detail_image_height">56dp</dimen>
     <dimen name="qs_detail_image_padding">16dp</dimen>
     <dimen name="qs_detail_item_height">48dp</dimen>
     <dimen name="qs_detail_header_text_size">20sp</dimen>
-    <dimen name="qs_detail_button_text_size">14sp</dimen>
-    <dimen name="qs_detail_item_primary_text_size">16sp</dimen>
+    <dimen name="qs_detail_button_text_size">12sp</dimen>
+    <dimen name="qs_detail_item_primary_text_size">15sp</dimen>
     <dimen name="qs_detail_item_secondary_text_size">14sp</dimen>
     <dimen name="qs_detail_empty_text_size">14sp</dimen>
     <dimen name="qs_detail_margin_top">28dp</dimen>
@@ -514,7 +514,7 @@
     <dimen name="qs_footer_icon_size">16dp</dimen>
     <dimen name="qs_paged_tile_layout_padding_bottom">0dp</dimen>
     <dimen name="qs_header_top_padding">15dp</dimen>
-    <dimen name="qs_header_bottom_padding">14dp</dimen>
+    <dimen name="qs_header_bottom_padding">15dp</dimen>
 
     <dimen name="qs_notif_collapsed_space">64dp</dimen>
 
@@ -530,7 +530,7 @@
     <dimen name="qs_peek_height">0dp</dimen>
 
     <!-- How large the icons in the quick settings footer dialog are -->
-    <dimen name="qs_footer_dialog_icon_size">24sp</dimen>
+    <dimen name="qs_footer_dialog_icon_size">22sp</dimen>
     <!-- Left and right margin of the icons -->
     <dimen name="qs_footer_dialog_icon_margin">8sp</dimen>
     <!-- Padding between subtitles and the following text in the QSFooter dialog -->
@@ -625,7 +625,7 @@
     <dimen name="keyguard_affordance_touch_target_size">120dp</dimen>
 
     <!-- The grow amount for the camera and phone circles when hinting -->
-    <dimen name="hint_grow_amount_sideways">60dp</dimen>
+    <dimen name="hint_grow_amount_sideways">54dp</dimen>
 
     <!-- Distance between notifications and header when they are considered to be colliding. -->
     <dimen name="header_notifications_collide_distance">48dp</dimen>
@@ -642,7 +642,7 @@
     <dimen name="edge_tap_area_width">48dp</dimen>
 
     <!-- The padding between notification children when collapsed -->
-    <dimen name="notification_children_padding">4dp</dimen>
+    <dimen name="notification_children_padding">5dp</dimen>
 
     <!-- The padding on top of the first notification to the children container -->
     <dimen name="notification_children_container_top_padding">8dp</dimen>
